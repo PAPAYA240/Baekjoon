@@ -11,7 +11,6 @@ char Map[7][13];
 bool visited[7][13];
 
 queue<pair<int, int>> que;
-vector<pair<int, int>> vec;
 vector<pair<int, int>> PopVec;
 
 int dx[5] = { 0, 1, -1, 0, 0 };
@@ -86,6 +85,7 @@ void ChangeValue()
 
 void BFS()
 {
+	vector<pair<int, int>> vec;
 	while (!que.empty())
 	{
 		pair<int, int> value = que.front();
@@ -122,8 +122,6 @@ void BFS()
 		while (!que.empty())
 			que.pop();
 	}
-
-	vec.clear();
 }
 
 int main()
@@ -135,6 +133,7 @@ int main()
 	Input();
 	
 	int a = 0;
+
 	// BFS
 	while(a < N * M)
 	{
@@ -151,11 +150,11 @@ int main()
 			}
 		}
 
-
 		// 자리 덮어 씌우기
 		while (!PopVec.empty())
 			ChangeValue();
 		fill(&visited[0][0], &visited[0][0] + sizeof(visited) / sizeof(visited[0][0]), false);
+		
 		// MapCheck();
 	}
 	cout << AllSize << endl;
