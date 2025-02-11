@@ -115,6 +115,7 @@ void Next(int* _videoLen, int* _currentPos)
         int videoB = _videoLen[1];
         _currentPos[0] = videoA;
         _currentPos[1] = videoB;
+        //_currentPos = _videoLen;
     }
     else
     {   
