@@ -1,68 +1,62 @@
+
 #include<iostream>
+#include<vector>
+
 
 using namespace std;
 
-int arr[2500][2500] = {};
-bool visited[2500][2500] = { false };
-int n;
-int iZero = 0, iMinus = 0, iPlus = 0;
+#define fastio() ios_base::sync_with_stdio(0),cin.tie(0),cout.tie(0);
+vector<vector<int>> v;
+int result[3] = { 0 };
 
-void Judg(int x, int y, int curN)
+bool Is_All_Same(int x, int y, int maxX, int maxY)
 {
-	if (visited[x][y])
-		return;
-
-	int current = arr[x][y];
-
-	bool bResult = true;
-	for (int i = x; i < x + curN; i++)
+	int cnt = v[x][y];
+	for (int i = x; i < maxX; i++)
 	{
-		for (int j = y; j < y + curN; j++)
+		for (int j = y; j < maxY; j++)
 		{
-			if (current != arr[i][j])
-			{
-				bResult = false;
-				break;
-			}
+			if (v[x][y] != v[i][j])
+				return false;
 		}
 	}
 
-	if (bResult)
+	return true;
+}
+
+// 현재 위치, 마지막 위치
+void Judg(int x, int y, int maxX, int maxY)
+{
+	// # 같다면
+	if (Is_All_Same(x, y, maxX, maxY))
 	{
-		for (int i = x; i < x + curN; i++)
-			for (int j = y; j < y + curN; j++)
-				visited[i][j] = true;
-
-		if (current == 0)
-			++iZero;
-		else if (current == 1)
-			++iPlus;
-		else
-			++iMinus;
-
+		++result[v[x][y] + 1];
 		return;
 	}
-	else
-	{
-		for (int i = x; i < x + curN; i++)
-			for (int j = y; j < y + curN; j++)
-				Judg(i, j, curN / 3);
-	}
+	
+
+	// # 같지 않다면
+	int divide = (maxX - x) / 3; // 한 변을 나눈다.
+		for (int i = x; i < maxX; i += divide)
+		for (int j = y; j < maxY; j += divide)
+			Judg(i, j, i + divide, j + divide);
 }
 
 int main()
 {
+	fastio();
+
+	int n;
 	cin >> n;
+
+	v.resize(n, vector<int>(n));
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++)
-			cin >> arr[i][j];
+			cin >> v[i][j];
 
-	for(int i = 0; i < n ; i++)
-		for(int j = 0; j < n; j++)
-			Judg(i , j, n);
+	 Judg(0 , 0, n, n);
 
-	cout << iMinus << endl;
-	cout << iZero << endl;
-	cout << iPlus << endl;
+	 for (int i = 0; i < 3; i++)
+		 cout << result[i] << endl;
 }
 
