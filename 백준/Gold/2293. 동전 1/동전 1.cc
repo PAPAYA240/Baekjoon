@@ -24,9 +24,8 @@ int main()
 	{
 		for (int j = 1; j <= k; j++) 
 		{
-			dp[j] = dp[j];
 			if (j >= v[i])
-				dp[j] = max(dp[j], dp[j] + dp[j - v[i]]);
+	            dp[j] += dp[j - v[i]];
 		}
 	}
 	printf("%d", dp[k]);
